@@ -10,29 +10,34 @@ function deleteBook(event) {
 
   var deletedBook = db.books.delete(event);
 
-  deletedBook.catch(function(rejected) {
+  deletedBook.then(function(resolved) {
+    document.getElementById(event).remove();
+    console.log(resolved);
+  }).catch(function(rejected) {
     console.log(rejected);
   })
 
+
 }
+
+// document.getElementById("submitBtn").addEventListener("click", addBook(event));
+
 
 function addBook(event) {
 
-    // 2: YOUR CODE HERE
-
-    // Hint: Once you've added the book to your database, call populateTableUI with the added book's title
-    // Check out the Table.put() method and what it returns at: https://dexie.org/docs/Table/Table.put()
-
-
-var addedBook = db.books.put(event);
-
-addedBook.then(function(resolved) {
-  console.log(resolved)
-});
-
-
+  db.books.add( _addBooks());
 }
 
+function _addBooks(){
+  return     {
+              "author": document.getElementById("inputAuthor").value,
+              "title": document.getElementById("inputTitle").value,
+              "rating": document.getElementById("inputRating").value,
+              "numberOfPages": document.getElementById("inputPages").value,
+              "synopsis": document.getElementById("inputSynopsis").value,
+              "publishDate": document.getElementById("inputDate").value
+            }
+};
 
 function editBook(event) {
 
@@ -71,6 +76,8 @@ async function populateTableUI(){
     for (let i = allBooks.length - 1; i >= 0; i--) {
       const row = document.createElement('tr');
 
+      row.id = allBooks[i].title;
+
       for (let j = 0; j < columns.length; j++) {
         var td = document.createElement('td');
         var value = allBooks[i][columns[j]]
@@ -82,8 +89,8 @@ async function populateTableUI(){
       const deleteBtn = document.createElement('button');
       deleteBtn.innerText = 'delete book';
 
-      deleteBtn.addEventListener("click", function(){
-        console.log("Hello World");
+      deleteBtn.addEventListener("click", ()=>{
+        deleteBook(allBooks[i].title);
       });
 
       row.append(deleteBtn);
@@ -98,16 +105,12 @@ async function populateTableUI(){
 
 
 
-
 // 2.) From here we want to be able to add a book. Hook up the form below the table to add a
 //book to the books store in indexedDB and auto-update the table without refreshing the page.
 //Hint: This add operation is on the front page of DexieJS.  Both is and Table.put() can be
 // used to add this book.
 
-// document.getElementByClass("btn-primary").addEventListener("click", function(){
-//   console.log("Hello World");
-//
-// });
+
 // 3.) Now make each table row editable and update the database when the edit is complete. This will
 //take a lot of effort from the html to the js. Use the title as your UID (Unique identifier)
 //which you can find in the application console

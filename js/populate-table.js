@@ -23,11 +23,6 @@ async function populateTableUI(newBookTitle) {
       row.append(deleteBtn);
       tBody.append(row);
 
-      // deleteBtn.setAttribute("id", "button");
-      //
-      // document.getElementById("button").addEventListener("click", function(){
-      //   console.log("Hello World");
-      // });
     }
 
   } else {

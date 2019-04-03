@@ -10,6 +10,7 @@
       <table class="table table-striped">
           <thead class="thead-dark">
               <tr>
+                  <!-- <th>Cover</th> -->
                   <th>Title</th>
                   <th>Author</th>
                   <th>Pages</th>
@@ -58,8 +59,7 @@
                 <input type="date" id="inputDate" class="form-control">
               </div>
             </div>
-            <button class="btn btn-primary" type="submit" onclick="addBook(event)">Submit</button>
-            <!-- <button class="btn btn-primary" type="delete" onclick="addBook(event)">Delete</button> -->
+            <button id ="submitBtn" class="btn btn-primary" type="submit" onclick="addBook(event)">Submit</button>
           </form>
       <script defer src="http://unpkg.com/dexie@latest/dist/dexie.js"></script>
       <script defer src="./js/indexedDB.js"></script>
