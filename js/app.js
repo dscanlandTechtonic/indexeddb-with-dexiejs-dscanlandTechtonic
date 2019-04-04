@@ -1,10 +1,11 @@
 function onDatabaseReady() {
     populateTableUI() // DO NOT TOUCH THIS LINE until step #4
 
+    document.getElementById('new')
+
     console.log(db);
     // DexieJS docs: https://dexie.org/
 }
-
 
 function deleteBook(event) {
 
@@ -16,28 +17,12 @@ function deleteBook(event) {
   }).catch(function(rejected) {
     console.log(rejected);
   })
-
-
 }
-
-// document.getElementById("submitBtn").addEventListener("click", addBook(event));
-
 
 function addBook(event) {
 
   db.books.add( _addBooks());
 }
-
-function _addBooks(){
-  return     {
-              "author": document.getElementById("inputAuthor").value,
-              "title": document.getElementById("inputTitle").value,
-              "rating": document.getElementById("inputRating").value,
-              "numberOfPages": document.getElementById("inputPages").value,
-              "synopsis": document.getElementById("inputSynopsis").value,
-              "publishDate": document.getElementById("inputDate").value
-            }
-};
 
 function editBook(event) {
 
@@ -50,6 +35,19 @@ function editBook(event) {
   })
 
 }
+
+function _addBooks(){
+  return {
+      "author": document.getElementById("inputAuthor").value,
+      "title": document.getElementById("inputTitle").value,
+      "rating": document.getElementById("inputRating").value,
+      "numberOfPages": document.getElementById("inputPages").value,
+      "synopsis": document.getElementById("inputSynopsis").value,
+      "publishDate": document.getElementById("inputDate").value
+  }
+};
+
+
 
 
 // ************ 4. (BONUS) Comment out line 67 in ../index.HTML and write your own 'populateTableUI' function in app.js ************
@@ -68,7 +66,7 @@ function editBook(event) {
 async function populateTableUI(){
 
   let tBody = document.querySelector('tbody');
-  let columns = ['title', 'author', 'numberOfPages', 'synopsis', 'publishDate', 'rating'];
+  let columns = ['cover','title', 'author', 'numberOfPages', 'synopsis', 'publishDate', 'rating'];
 
 
   let allBooks = await db.books.where('numberOfPages').aboveOrEqual(0).toArray()
@@ -94,6 +92,16 @@ async function populateTableUI(){
       });
 
       row.append(deleteBtn);
+      tBody.append(row);
+
+      const editBtn = document.createElement('button');
+      editBtn.innerText = 'edit book';
+
+      editBtn.addEventListener("click", ()=>{
+        editBook(allBooks[i].title);
+      });
+
+      row.append(editBtn);
       tBody.append(row);
 
     }
